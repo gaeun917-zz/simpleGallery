@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Simple Gallery</title>
+
+    <style>
+        div.image-container {
+            position: relative;
+        }
+        div.image-container img {
+
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 120px;
+        }
+    </style>
+
+    <script type="text/javascript"  src="libs/jquery-1.11.0.min.js"></script>
+    <script>
+
+
+        $(document).ready(function() {
+
+            var img1 = new SimpleGallery("#container1 img");
+
+            // Click event
+            $("#btnHorizontal").click(function() {
+                img1.show('h');
+            });
+            $("#btnVertical").click(function() {
+                img1.show('v');
+            });
+            $("#btnRandom").click(function() {
+                img1.show('r');
+            });
+            $("#btnGrid").click(function() {
+                img1.show('c');
+            });
+        });
+
+        function SimpleGallery(selector){
+            this.$images = $(selector);
+        }
+
+        // 이미지를 가로로 정렬
+        SimpleGallery.prototype.show=function(type) {
+            switch (type) {
+                case 'v':
+                    this.vertical();
+                    break;
+                case 'h':
+                    this.horizontal();
+                    break;
+                case 'r':
+                    this.random();
+                    break;
+                case 'c' :
+                    this.checkboard();
+                    break;
+            }
+        };
+        SimpleGallery.prototype.horizontal=function() {
+
+            var length = this.$images.length;
+            for (var i = 0; i < length; i++) {
+                var x = i * 200; // index# *200
+
+                this.$images.eq(i).css({
+                    top :0,
+                    left: x
+                });
+            }
+        };
+        SimpleGallery.prototype.vertical=function() {
+            var length = this.$images.length;
+            for (var i = 0; i < length; i++) {
+                var x = i * 200;
+                this.$images.eq(i).css({
+                    top: x,
+                    left: 0
+                });
+            }
+        };
+        SimpleGallery.prototype.random=function() {
+            var length = this.$images.length;
+
+            for (var i = 0; i < length; i++) {
+                var x = Math.random() * 400; // 0-400의 랜덤#
+                var y = Math.random() * 400;
+                this.$images.eq(i).css({
+                    left: x,
+                    top: y
+                });
+            }
+        };
+        SimpleGallery.prototype.checkboard=function() {
+            var length = this.$images.length;
+            var count = 3; // 3 image in a row
+
+            for (var i = 0; i < length; i++) {
+                var x = (i % count) * 200;
+                var y = parseInt(i / count) * 200;
+
+                this.$images.eq(i).css({
+                    top: x,
+                    left: y
+                });
+            }
+        };
+    </script>
+</head>
+
+<body>
+
+<div>
+    <button id="btnHorizontal">
+        Horizontal
+    </button>
+    <button id="btnVertical">
+        Vertical
+    </button>
+
+    <button id="btnRandom">
+        Random
+    </button>
+    <button id="btnGrid">
+        Grid
+    </button>
+
+</div>
+<div class="image-container" id="container1">
+    <img src="banners/1.png" >
+    <img src="banners/2.png" >
+    <img src="banners/3.png" >
+    <img src="banners/4.png" >
+    <img src="banners/5.png" >
+    <img src="banners/6.png" >
+    <img src="banners/7.png" >
+    <img src="banners/8.png" >
+</div>
+
+</body>
+</html>
